@@ -28,8 +28,8 @@ import com.pzv.platform.persistence.repo.dao.RouterDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={PersistenceConfig.class})
-@ActiveProfiles({"local"})
-//@ActiveProfiles({"default"})
+//@ActiveProfiles({"local"})
+@ActiveProfiles({"default"})
 public class PersistenceTestCases {
 	private static final Logger LOG = LoggerFactory.getLogger(PersistenceTestCases.class);
 	
