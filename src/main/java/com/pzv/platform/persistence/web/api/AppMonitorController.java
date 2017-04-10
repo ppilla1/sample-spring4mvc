@@ -40,7 +40,7 @@ public class AppMonitorController {
 		String reply = applicationName;
 		Route route = routerDao.getOne(2l);
 		ResponseEntity<?> response = new ResponseEntity<>(route, HttpStatus.OK);
-		LOG.info("Response => {}",route);
+		LOG.info("[{}] Response => {}",reply,route);
 		return response;
 	}
 
