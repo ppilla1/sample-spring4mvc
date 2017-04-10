@@ -32,6 +32,10 @@
 		<swagger.version>2.6.0</swagger.version>
 		<!--end: documentation framework -->
 
+		<!--start: util framework -->
+		<commons-configuration.version>1.10</commons-configuration.version>
+		<!--end: util framework -->
+
 		<!--start: plugins -->
 		<maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
 		<maven-war-plugin.version>2.6</maven-war-plugin.version>
@@ -67,6 +71,16 @@
 			<version>${swagger.version}</version>
 		</dependency>
 		<!--end: documentation framework -->
+
+		<!--start: util framework -->
+		
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>${commons-configuration.version}</version>
+		</dependency>
+		
+		<!--end: util framework -->
 
 		<!--start: persistence frameworks -->
 		<dependency>
