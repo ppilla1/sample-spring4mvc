@@ -27,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.pzv.platform.persistence.AppConfig;
+import com.pzv.platform.persistence.repo.PersistenceConfig;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -38,7 +39,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages = { "com.pzv.platform.persistence.web" })
 @EnableWebMvc
 @EnableSwagger2
-@Import({ AppConfig.class })
+@Import({ AppConfig.class,PersistenceConfig.class})
 public class WebConfig extends WebMvcConfigurerAdapter implements WebApplicationInitializer {
 	@Autowired
 	private Environment env;

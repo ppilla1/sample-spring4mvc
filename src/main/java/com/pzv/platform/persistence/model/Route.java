@@ -1,14 +1,22 @@
 package com.pzv.platform.persistence.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name="route")
-public class Route {
+public class Route implements Serializable{
+
+	private static final long serialVersionUID = 7646316803560120311L;
+
 	@Id
 	@GeneratedValue
 	private Long id;

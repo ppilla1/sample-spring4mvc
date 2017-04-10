@@ -1,16 +1,20 @@
 package com.pzv.platform.persistence.web.api;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.pzv.platform.persistence.model.Route;
+import com.pzv.platform.persistence.repo.dao.RouterDAO;
 
 import io.swagger.annotations.Api;
 
@@ -19,6 +23,9 @@ import io.swagger.annotations.Api;
 public class AppMonitorController {
 	private static final Logger LOG = LoggerFactory.getLogger(AppMonitorController.class);
 
+	@Autowired
+	private RouterDAO routerDao;
+	
 	@Value("${application.name}")
 	private String applicationName;
 
@@ -28,9 +35,12 @@ public class AppMonitorController {
 	}
 
 	@RequestMapping(value = "/monitor/ping", method = RequestMethod.GET)
+	@Transactional
 	public ResponseEntity<?> ping() {
 		String reply = applicationName;
-		ResponseEntity<?> response = new ResponseEntity<>(reply, HttpStatus.OK);
+		Route route = routerDao.getOne(2l);
+		ResponseEntity<?> response = new ResponseEntity<>(route, HttpStatus.OK);
+		LOG.info("Response => {}",route);
 		return response;
 	}
 
