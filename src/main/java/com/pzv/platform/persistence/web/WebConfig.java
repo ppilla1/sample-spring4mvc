@@ -64,6 +64,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebApplication
 		PropertySourcesPlaceholderConfigurer propertyConfigurer = new PropertySourcesPlaceholderConfigurer();
 		propertyConfigurer.setEnvironment(env);
 		
+		LOG.info("DB Config -> {}");
 		return propertyConfigurer;
 	}
 
