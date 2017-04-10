@@ -1,19 +1,26 @@
 package com.pzv.platform.persistence.web;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
+import javax.sql.DataSource;
 
+import org.apache.commons.configuration.DatabaseConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.web.WebApplicationInitializer;
@@ -40,10 +47,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableWebMvc
 @EnableSwagger2
 @Import({ AppConfig.class,PersistenceConfig.class})
+@PropertySource("classpath:application.properties")
 public class WebConfig extends WebMvcConfigurerAdapter implements WebApplicationInitializer {
+	private static final Logger LOG = LoggerFactory.getLogger(WebConfig.class);
+	
 	@Autowired
 	private Environment env;
-
+	
 	/**
 	 * This bean was declared to fix issue of
 	 * @Value annotation not working while
@@ -53,6 +63,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebApplication
 	public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
 		PropertySourcesPlaceholderConfigurer propertyConfigurer = new PropertySourcesPlaceholderConfigurer();
 		propertyConfigurer.setEnvironment(env);
+		
 		return propertyConfigurer;
 	}
 

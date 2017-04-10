@@ -3,3 +3,5 @@ insert into route (tenantid,featureid,routeid,active,routexml) values ('DANA-US'
 insert into route (tenantid,featureid,routeid,active,routexml) values ('DANA-US','HENDERSON-AVAILABILITY','henderson-availability',1,'<routes xmlns="http://camel.apache.org/schema/spring"><route id="henderson-availability"><from uri="direct:henderson-availability"/><to uri="mock:henderson-availability"/></route></routes>');
 insert into route (tenantid,featureid,routeid,active,routexml) values ('DANA-US','ALBION-AVAILABILITY','albion-availability',1,'<routes xmlns="http://camel.apache.org/schema/spring"><route id="albion-availability"><from uri="direct:albion-availability"/><to uri="mock:albion-availability"/></route></routes>');
 insert into route (tenantid,featureid,routeid,active,routexml) values ('DANA-US','LIMA-AVAILABILITY','lima-availability',1,'<routes xmlns="http://camel.apache.org/schema/spring"><route id="lima-availability"><from uri="direct:lima-availability"/><to uri="mock:lima-availability"/></route></routes>');
+
+insert into integrationconfig(appname,configkey,configvalue) values ('pzv-integration','application.name','pzv-integration-platform');

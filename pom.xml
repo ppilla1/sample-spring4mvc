@@ -73,13 +73,12 @@
 		<!--end: documentation framework -->
 
 		<!--start: util framework -->
-		
 		<dependency>
 			<groupId>commons-configuration</groupId>
 			<artifactId>commons-configuration</artifactId>
 			<version>${commons-configuration.version}</version>
 		</dependency>
-		
+
 		<!--end: util framework -->
 
 		<!--start: persistence frameworks -->

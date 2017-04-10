@@ -5,12 +5,14 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -27,67 +29,15 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@Import(value={DefaultPersistenceConfig.class,LocalPersistenceConfig.class})
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = { "com.pzv.platform.persistence.repo.dao" })
 @ComponentScan({ "com.pzv.platform.persistence.repo" })
-@PropertySource({"classpath:application.properties"})
 public class PersistenceConfig {
-
-	@Configuration
-	@Profile("default")
-	@PropertySource({"classpath:db-default.properties"})
-	class Default{
-		
-		@Bean
-		public DataSource dataSource(){
-			EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-
-			EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.HSQL)
-					.addScript(env.getProperty("db.create.script"))
-					.addScript(env.getProperty("db.datainit.script")).build();
-
-			return db;
-		}
-		
-		@Bean("additionalProperties")
-		public Properties defaultAdditionalProperties() {
-			Properties properties = new Properties();
-//			properties.setProperty("hibernate.globally_quoted_identifiers",env.getProperty("default.hibernate.globally_quoted_identifiers"));
-			properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-			properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-			return properties;
-		}		
-	}
-	
-	@Configuration
-	@Profile("local")
-	@PropertySource({"classpath:db-local.properties"})
-	class Local{
-		@Bean
-		public DataSource dataSource(){
-			BasicDataSource dataSource = new BasicDataSource();
-			dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-			dataSource.setUrl(env.getProperty("jdbc.url"));
-			dataSource.setUsername(env.getProperty("jdbc.user"));
-			dataSource.setPassword(env.getProperty("jdbc.pass"));
-			return dataSource;
-		}
-		
-		@Bean("additionalProperties")
-		public Properties defaultAdditionalProperties() {
-			Properties properties = new Properties();
-//			properties.setProperty("hibernate.globally_quoted_identifiers",env.getProperty("default.hibernate.globally_quoted_identifiers"));
-			properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-			properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-			return properties;
-		}		
-	}
-	
-	@Autowired
-	private Environment env;
 
 	@Autowired
 	private DataSource dataSource;
+
 
 	@Bean
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
