@@ -1,40 +1,53 @@
 package com.pzv.platform.persistence.repo;
 
+import java.util.Objects;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import com.pzv.platform.persistence.util.AppPropertyUtil;
 
 @Configuration
 @Profile("local")
-@PropertySource({"classpath:db-local.properties"})
+@PropertySource({ "classpath:db-local.properties" })
 public class LocalPersistenceConfig {
-	@Autowired
-	private Environment env;
+	private static final Logger LOG = LoggerFactory.getLogger(LocalPersistenceConfig.class);
 
 	@Bean
-	public DataSource dataSource(){
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-		dataSource.setUrl(env.getProperty("jdbc.url"));
-		dataSource.setUsername(env.getProperty("jdbc.user"));
-		dataSource.setPassword(env.getProperty("jdbc.pass"));
+	public DataSource dataSource() {
+		BasicDataSource dataSource = null;
+
+		Properties dbProperties = AppPropertyUtil.fetchProperties("db-local.properties");
+
+		if (Objects.nonNull(dbProperties)) {
+			dataSource = new BasicDataSource();
+			dataSource.setDriverClassName(dbProperties.getProperty("jdbc.driverClassName"));
+			dataSource.setUrl(dbProperties.getProperty("jdbc.url"));
+			dataSource.setUsername(dbProperties.getProperty("jdbc.user"));
+			dataSource.setPassword(dbProperties.getProperty("jdbc.pass"));
+
+		}
+
 		return dataSource;
 	}
-	
+
+	@Bean
+	public DatabaseConfiguration DatabaseConfiguration() {
+		DatabaseConfiguration dbConfiguration = new DatabaseConfiguration(dataSource(), "integrationconfig", "appname",
+				"configkey", "configvalue", "pzv-integration");
+		return dbConfiguration;
+	}
+
 	@Bean("additionalProperties")
 	public Properties defaultAdditionalProperties() {
-		Properties properties = new Properties();
-//		properties.setProperty("hibernate.globally_quoted_identifiers",env.getProperty("default.hibernate.globally_quoted_identifiers"));
-		properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-		properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-		return properties;
-	}	
+		return AppPropertyUtil.fetchProperties("db-local.properties");
+	}
 }

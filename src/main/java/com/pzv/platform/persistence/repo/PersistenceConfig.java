@@ -45,11 +45,6 @@ public class PersistenceConfig {
 	}
 
 	@Bean
-	public DatabaseConfiguration DatabaseConfiguration(){
-		return new DatabaseConfiguration(dataSource, "integrationconfig", "appname", "configkey", "configvalue", "pzv-integration");
-	}
-	
-	@Bean
 	public NamedParameterJdbcTemplate jdbcTemplate() {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		return jdbcTemplate;

@@ -3,6 +3,7 @@ package com.pzv.platform.persistence.web;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 import javax.servlet.Filter;
@@ -35,6 +36,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.pzv.platform.persistence.AppConfig;
 import com.pzv.platform.persistence.repo.PersistenceConfig;
+import com.pzv.platform.persistence.util.AppPropertyUtil;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -51,20 +53,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class WebConfig extends WebMvcConfigurerAdapter implements WebApplicationInitializer {
 	private static final Logger LOG = LoggerFactory.getLogger(WebConfig.class);
 	
-	@Autowired
-	private Environment env;
-	
 	/**
 	 * This bean was declared to fix issue of
 	 * @Value annotation not working while
 	 * swagger was enabled
 	 * */
 	@Bean
-	public PropertySourcesPlaceholderConfigurer propertyConfigurer() {
+	public PropertySourcesPlaceholderConfigurer propertyConfigurer(DatabaseConfiguration dbConfiguration,Environment env) {
 		PropertySourcesPlaceholderConfigurer propertyConfigurer = new PropertySourcesPlaceholderConfigurer();
+		
+		Properties dbProperties = AppPropertyUtil.fetchProperties(dbConfiguration);
+		
+		if (Objects.nonNull(dbProperties)){
+			propertyConfigurer.setProperties(dbProperties);
+		}
+
 		propertyConfigurer.setEnvironment(env);
 		
-		LOG.info("DB Config -> {}");
 		return propertyConfigurer;
 	}
 

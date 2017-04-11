@@ -1,45 +1,58 @@
 package com.pzv.platform.persistence.repo;
 
+import java.util.Objects;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.configuration.DatabaseConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+import com.pzv.platform.persistence.util.AppPropertyUtil;
+
 @Configuration
 @Profile("default")
-@PropertySource({"classpath:db-default.properties"})
+@PropertySource({ "classpath:db-default.properties" })
 public class DefaultPersistenceConfig {
-	@Autowired
-	private Environment env;
-	
-	@Bean
-	public DataSource dataSource(){
-		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+	private static final Logger LOG = LoggerFactory.getLogger(DefaultPersistenceConfig.class);
 
-		EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.HSQL)
-				.addScript(env.getProperty("db.create.script"))
-				.addScript("db/sql/create-hsql-configDB.sql")
-				.addScript(env.getProperty("db.datainit.script")).build();
+	@Bean
+	public DataSource dataSource() {
+		EmbeddedDatabase db = null;
+		Properties dbProperties = AppPropertyUtil.fetchProperties("db-default.properties");
+
+		LOG.info("--> {}",dbProperties);
+		
+		if (Objects.nonNull(dbProperties)) {
+			EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+
+			db = builder.setType(EmbeddedDatabaseType.HSQL).addScript(dbProperties.getProperty("db.create.script"))
+					.addScript(dbProperties.getProperty("db.createConfig.script"))
+					.addScript(dbProperties.getProperty("db.datainit.script")).build();
+		}
 
 		return db;
 	}
-	
+
+	@Bean
+	public DatabaseConfiguration DatabaseConfiguration() {
+		DatabaseConfiguration dbConfiguration = new DatabaseConfiguration(dataSource(), "integrationconfig", "appname",
+				"configkey", "configvalue", "pzv-integration");
+		;
+		return dbConfiguration;
+	}
+
 	@Bean("additionalProperties")
 	public Properties defaultAdditionalProperties() {
-		Properties properties = new Properties();
-//		properties.setProperty("hibernate.globally_quoted_identifiers",env.getProperty("default.hibernate.globally_quoted_identifiers"));
-		properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-		properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-		return properties;
+		return AppPropertyUtil.fetchProperties("db-default.properties");
 	}
 
 }
