@@ -44,7 +44,7 @@ public class DefaultPersistenceConfig {
 
 	@Bean
 	public DatabaseConfiguration DatabaseConfiguration() {
-		DatabaseConfiguration dbConfiguration = new DatabaseConfiguration(dataSource(), "integrationconfig", "appname",
+		DatabaseConfiguration dbConfiguration = new DatabaseConfiguration(dataSource(), "pz_platformservice_integration", "appname",
 				"configkey", "configvalue", "pzv-integration");
 		;
 		return dbConfiguration;
