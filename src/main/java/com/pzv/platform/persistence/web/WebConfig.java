@@ -2,15 +2,11 @@ package com.pzv.platform.persistence.web;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Properties;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
-import org.apache.commons.configuration.DatabaseConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +14,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.Environment;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -32,8 +26,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.pzv.platform.persistence.AppConfig;
 import com.pzv.platform.persistence.repo.PersistenceConfig;
-import com.pzv.platform.persistence.util.AppPropertyUtil;
-
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -49,26 +41,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class WebConfig extends WebMvcConfigurerAdapter implements WebApplicationInitializer {
 	private static final Logger LOG = LoggerFactory.getLogger(WebConfig.class);
 	
-	/**
-	 * This bean was declared to fix issue of
-	 * @Value annotation not working while
-	 * swagger was enabled
-	 * */
-	@Bean
-	public PropertySourcesPlaceholderConfigurer propertyConfigurer(DatabaseConfiguration dbConfiguration,Environment env) {
-		PropertySourcesPlaceholderConfigurer propertyConfigurer = new PropertySourcesPlaceholderConfigurer();
-		
-		Properties dbProperties = AppPropertyUtil.fetchProperties(dbConfiguration);
-		
-		if (Objects.nonNull(dbProperties)){
-			propertyConfigurer.setProperties(dbProperties);
-		}
-
-		propertyConfigurer.setEnvironment(env);
-		
-		return propertyConfigurer;
-	}
-
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
