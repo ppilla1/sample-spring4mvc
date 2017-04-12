@@ -18,6 +18,7 @@
 		<spring.version>4.3.7.RELEASE</spring.version>
 		<spring-security.version>4.2.2.RELEASE</spring-security.version>
 		<jackson.version>2.9.0.pr2</jackson.version>
+		<camel.version>2.18.3</camel.version>
 		<!--end: application framework -->
 
 		<!--start: persistence frameworks -->
@@ -213,6 +214,14 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring-security.version}</version>
 		</dependency>
+
+		<!-- camel -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring-javaconfig</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+
 		<!--end: application frameworks -->
 	</dependencies>
 	<build>

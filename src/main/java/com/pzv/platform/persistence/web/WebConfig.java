@@ -34,7 +34,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ComponentScan(basePackages = { "com.pzv.platform.persistence.web" })
 @EnableWebMvc
 @EnableSwagger2
-@Import({ AppConfig.class,PersistenceConfig.class})
+@Import({ AppConfig.class})
 @PropertySource("classpath:application.properties")
 public class WebConfig extends WebMvcConfigurerAdapter implements WebApplicationInitializer {
 	
