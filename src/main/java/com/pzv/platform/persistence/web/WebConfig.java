@@ -7,8 +7,6 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +37,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import({ AppConfig.class,PersistenceConfig.class})
 @PropertySource("classpath:application.properties")
 public class WebConfig extends WebMvcConfigurerAdapter implements WebApplicationInitializer {
-	private static final Logger LOG = LoggerFactory.getLogger(WebConfig.class);
 	
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {

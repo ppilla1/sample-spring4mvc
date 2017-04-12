@@ -7,8 +7,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,7 +17,6 @@ import com.pzv.platform.persistence.util.AppPropertyUtil;
 @Profile("local")
 @PropertySource({ "classpath:db-local.properties" })
 public class LocalPersistenceConfig {
-	private static final Logger LOG = LoggerFactory.getLogger(LocalPersistenceConfig.class);
 
 	@Bean
 	public DataSource dataSource() {
