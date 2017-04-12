@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.apache.camel.spring.javaconfig.CamelConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -23,15 +24,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.pzv.platform.persistence.AppConfig;
 
 @Configuration
-@Import(value={AppConfig.class,DefaultPersistenceConfig.class,LocalPersistenceConfig.class})
+@Import(value={AppConfig.class})
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = { "com.pzv.platform.persistence.repo.dao" })
 @ComponentScan({ "com.pzv.platform.persistence.repo" })
-public class PersistenceConfig {
-
-	@Autowired
-	private DataSource dataSource;
-
+public class PersistenceConfig extends CamelConfiguration{
 
 	@Bean
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
@@ -39,13 +36,13 @@ public class PersistenceConfig {
 	}
 
 	@Bean
-	public NamedParameterJdbcTemplate jdbcTemplate() {
+	public NamedParameterJdbcTemplate jdbcTemplate(DataSource dataSource) {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		return jdbcTemplate;
 	}
 	
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Autowired @Qualifier("additionalProperties") Properties additionalProperties) {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Autowired @Qualifier("additionalProperties") Properties additionalProperties,DataSource dataSource) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 
 		em.setDataSource(dataSource);

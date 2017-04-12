@@ -38,7 +38,7 @@ public class AppMonitorController {
 	@Transactional
 	public ResponseEntity<?> ping() {
 		String reply = applicatioName;
-		Route route = routerDao.getOne(2l);
+		Route route = routerDao.findByTenantAndFeatureId("DANA-US", "HENDERSON-AVAILABILITY");
 		ResponseEntity<?> response = new ResponseEntity<>(route, HttpStatus.OK);
 		LOG.info("[{}] Response => {}",reply,route);
 		return response;

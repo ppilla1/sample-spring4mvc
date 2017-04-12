@@ -30,11 +30,10 @@ public class AppConfig {
 		PropertySourcesPlaceholderConfigurer propertyConfigurer = new PropertySourcesPlaceholderConfigurer();
 		
 		Properties dbProperties = AppPropertyUtil.fetchProperties(dbConfiguration);
-
-		PropertiesComponent pc = new PropertiesComponent();
 		
 		if (Objects.nonNull(dbProperties)){
 			propertyConfigurer.setProperties(dbProperties);
+			PropertiesComponent pc = new PropertiesComponent();
 			pc.setInitialProperties(dbProperties);
 			camelContext.addComponent("properties", pc);
 		}
