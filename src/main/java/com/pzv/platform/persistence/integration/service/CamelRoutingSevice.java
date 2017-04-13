@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.pzv.platform.persistence.model.Route;
 import com.pzv.platform.persistence.repo.dao.RouterDAO;
+import com.pzv.platform.persistence.service.SampleBean;
 
 @Service
 class CamelRoutingSevice implements RoutingService {
@@ -34,6 +35,9 @@ class CamelRoutingSevice implements RoutingService {
 	private void init(){
 		List<Route> activeRoutes = routerDAO.findAllActiveRoutes();
 		TypeConverter typeConverter = camelContext.getTypeConverter();
+		SampleBean sampleBean = camelContext.getRegistry().lookupByNameAndType("samplebean", SampleBean.class);
+		
+		LOG.info("SampleBean ===> {}",sampleBean.ping());
 		
 		for(Route route:activeRoutes){
 			try (InputStream in = typeConverter.mandatoryConvertTo(InputStream.class, route.getRouteXML())){
