@@ -1,0 +1,6 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+	<route id="lima-availability">
+		<from uri="{{dana.lima.availability.start}}" />
+		<to uri="{{dana.lima.availability.end}}" />
+	</route>
+</routes>

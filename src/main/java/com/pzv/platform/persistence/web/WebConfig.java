@@ -1,17 +1,25 @@
 package com.pzv.platform.persistence.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
+
+import org.jolokia.jvmagent.spring.SpringJolokiaAgent;
+import org.jolokia.jvmagent.spring.SpringJolokiaConfigHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -93,4 +101,21 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebApplication
 				.paths(PathSelectors.any()).build();
 	}
 
+	@Bean
+	public SpringJolokiaAgent jolokia(Environment env){
+		
+		SpringJolokiaAgent jolokia = new SpringJolokiaAgent();
+		jolokia.setLookupConfig(false);
+		jolokia.setSystemPropertiesMode("never");
+		
+		SpringJolokiaConfigHolder pConfig = new SpringJolokiaConfigHolder();
+		Map<String, String> configMap = new HashMap<>();
+		configMap.put("autostart", "true");
+		configMap.put("host", "0.0.0.0");
+		configMap.put("port", "8778");
+		pConfig.setConfig(configMap);
+		
+		jolokia.setConfig(pConfig);
+		return jolokia;
+	}
 }

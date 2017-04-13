@@ -1,0 +1,8 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+	<route id="crossville-availability">
+		<from uri="timer://{{dana.crossville.availability.start}}?fixedRate=true&amp;period=5000" />
+		<bean beanType="com.pzv.platform.persistence.service.SampleBean" method="ping()"/>
+		<log message="Body ==> ${body}"/>
+		<to uri="{{dana.crossville.availability.end}}" />
+	</route>
+</routes>

@@ -1,0 +1,6 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+	<route id="albion-availability">
+		<from uri="{{dana.albion.availability.start}}" />
+		<to uri="{{dana.albion.availability.end}}" />
+	</route>
+</routes>

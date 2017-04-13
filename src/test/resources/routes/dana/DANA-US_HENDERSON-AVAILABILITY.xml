@@ -1,0 +1,6 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+	<route id="henderson-availability">
+		<from uri="{{dana.henderson.availability.start}}" />
+		<to uri="{{dana.henderson.availability.end}}" />
+	</route>
+</routes>
