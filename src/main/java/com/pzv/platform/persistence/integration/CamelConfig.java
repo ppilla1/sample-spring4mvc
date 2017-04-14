@@ -9,7 +9,7 @@ import com.pzv.platform.persistence.AppConfig;
 
 @Configuration
 @Import(value={AppConfig.class})
-@ComponentScan({"com.pzv.platform.persistence.service","com.pzv.platform.persistence.integration"})
+@ComponentScan({"com.pzv.platform.persistence.service","com.pzv.platform.persistence.integration","com.pzv.platform.persistence.integration.thirdparty"})
 public class CamelConfig extends CamelConfiguration{
 
 }
