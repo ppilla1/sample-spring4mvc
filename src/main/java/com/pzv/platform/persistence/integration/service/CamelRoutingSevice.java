@@ -35,9 +35,6 @@ class CamelRoutingSevice implements RoutingService {
 	private void init(){
 		List<Route> activeRoutes = routerDAO.findAllActiveRoutes();
 		TypeConverter typeConverter = camelContext.getTypeConverter();
-		SampleBean sampleBean = camelContext.getRegistry().lookupByNameAndType("samplebean", SampleBean.class);
-		
-		LOG.info("SampleBean ===> {}",sampleBean.ping());
 		
 		for(Route route:activeRoutes){
 			try (InputStream in = typeConverter.mandatoryConvertTo(InputStream.class, route.getRouteXML())){

@@ -28,7 +28,8 @@ public class AppConfig {
 	@Bean
 	public PropertySourcesPlaceholderConfigurer propertyConfigurer(DatabaseConfiguration dbConfiguration,Environment env,CamelContext camelContext) {
 		PropertySourcesPlaceholderConfigurer propertyConfigurer = new PropertySourcesPlaceholderConfigurer();
-		
+		propertyConfigurer.setEnvironment(env);
+
 		Properties dbProperties = AppPropertyUtil.fetchProperties(dbConfiguration);
 		
 		if (Objects.nonNull(dbProperties)){
@@ -38,7 +39,6 @@ public class AppConfig {
 			camelContext.addComponent("properties", pc);
 		}
 
-		propertyConfigurer.setEnvironment(env);
 		
 		return propertyConfigurer;
 	}	

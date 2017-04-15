@@ -5,6 +5,7 @@ insert into route (tenantid,featureid,routeid,active,routexml) values ('DANA-US'
 insert into route (tenantid,featureid,routeid,active,routexml) values ('DANA-US','LIMA-AVAILABILITY','lima-availability',1,'<routes xmlns="http://camel.apache.org/schema/spring"><route id="lima-availability"><from uri="{{dana.lima.availability.start}}" /><to uri="{{dana.lima.availability.end}}" /></route></routes>');
 
 insert into pz_platformservice_integration(appname,configkey,configvalue) values ('pzv-integration','application.name','pzv-integration-platform');
+insert into pz_platformservice_integration(appname,configkey,configvalue) values ('pzv-integration','jolokia.port','8779');
 insert into pz_platformservice_integration(appname,configkey,configvalue) values ('pzv-integration','dana.crossville.availability.start','crossville-availability');
 insert into pz_platformservice_integration(appname,configkey,configvalue) values ('pzv-integration','dana.crossville.availability.end','mock:crossville-availability');
 insert into pz_platformservice_integration(appname,configkey,configvalue) values ('pzv-integration','dana.lc.availability.start','direct:lc-availability');

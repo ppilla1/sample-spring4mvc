@@ -13,13 +13,12 @@ import javax.servlet.ServletRegistration;
 
 import org.jolokia.jvmagent.spring.SpringJolokiaAgent;
 import org.jolokia.jvmagent.spring.SpringJolokiaConfigHolder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -102,7 +101,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebApplication
 	}
 
 	@Bean
-	public SpringJolokiaAgent jolokia(Environment env){
+	public SpringJolokiaAgent jolokia(@Value("${jolokia.port}") String port){
 		
 		SpringJolokiaAgent jolokia = new SpringJolokiaAgent();
 		jolokia.setLookupConfig(false);
@@ -112,7 +111,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebApplication
 		Map<String, String> configMap = new HashMap<>();
 		configMap.put("autostart", "true");
 		configMap.put("host", "0.0.0.0");
-		configMap.put("port", "8778");
+		configMap.put("port", port);
 		pConfig.setConfig(configMap);
 		
 		jolokia.setConfig(pConfig);
