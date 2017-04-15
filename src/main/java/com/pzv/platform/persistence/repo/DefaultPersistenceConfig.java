@@ -5,11 +5,9 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.configuration.DatabaseConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -18,7 +16,6 @@ import com.pzv.platform.persistence.util.AppPropertyUtil;
 
 @Configuration
 @Profile("default")
-@PropertySource({ "classpath:db-default.properties" })
 public class DefaultPersistenceConfig {
 
 	@Bean
@@ -35,14 +32,6 @@ public class DefaultPersistenceConfig {
 		}
 
 		return db;
-	}
-
-	@Bean
-	public DatabaseConfiguration DatabaseConfiguration() {
-		DatabaseConfiguration dbConfiguration = new DatabaseConfiguration(dataSource(), "pz_platformservice_integration", "appname",
-				"configkey", "configvalue", "pzv-integration");
-		;
-		return dbConfiguration;
 	}
 
 	@Bean("additionalProperties")

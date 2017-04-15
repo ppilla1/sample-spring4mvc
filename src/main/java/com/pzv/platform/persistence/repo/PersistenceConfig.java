@@ -6,6 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.apache.camel.spring.javaconfig.CamelConfiguration;
+import org.apache.commons.configuration.DatabaseConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.pzv.platform.persistence.AppConfig;
+import com.pzv.platform.persistence.util.AppPropertyUtil;
 
 @Configuration
 @Import(value={AppConfig.class})
@@ -29,6 +31,19 @@ import com.pzv.platform.persistence.AppConfig;
 @EnableJpaRepositories(basePackages = { "com.pzv.platform.persistence.repo.dao" })
 @ComponentScan({ "com.pzv.platform.persistence.repo" })
 public class PersistenceConfig extends CamelConfiguration{
+
+	@Bean
+	public DatabaseConfiguration DatabaseConfiguration(DataSource dataSource) {
+		Properties appProperties = AppPropertyUtil.fetchProperties("application.properties");
+		DatabaseConfiguration dbConfiguration = new DatabaseConfiguration(
+				dataSource, 
+				appProperties.getProperty("application.conf.tablename"),
+				appProperties.getProperty("application.conf.tablename.appnameColumn"),
+				appProperties.getProperty("application.conf.tablename.keynameColumn"), 
+				appProperties.getProperty("application.conf.tablename.valueColumn"), 
+				appProperties.getProperty("application.name"));
+		return dbConfiguration;
+	}
 
 	@Bean
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {

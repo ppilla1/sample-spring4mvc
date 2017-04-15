@@ -5,17 +5,14 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.configuration.DatabaseConfiguration;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import com.pzv.platform.persistence.util.AppPropertyUtil;
 
 @Configuration
 @Profile("local")
-@PropertySource({ "classpath:db-local.properties" })
 public class LocalPersistenceConfig {
 
 	@Bean
@@ -34,13 +31,6 @@ public class LocalPersistenceConfig {
 		}
 
 		return dataSource;
-	}
-
-	@Bean
-	public DatabaseConfiguration DatabaseConfiguration() {
-		DatabaseConfiguration dbConfiguration = new DatabaseConfiguration(dataSource(), "pz_platformservice_integration", "appname",
-				"configkey", "configvalue", "pzv-integration");
-		return dbConfiguration;
 	}
 
 	@Bean("additionalProperties")
